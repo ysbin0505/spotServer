@@ -5,6 +5,8 @@ import com.example.spotserver.service.UserService;
 import jakarta.websocket.server.PathParam;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +35,15 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> getUsers() {
+    public ResponseEntity<List<User>> getUsers() {
         System.out.println("UserController.getUsers");
-        return userService.findAllUsers();
+        List<User> allUsers = userService.findAllUsers();
+
+        HttpStatus status = HttpStatus.OK;
+        ResponseEntity response = new ResponseEntity(allUsers, status);
+
+        //다른 방법 ResponseEntity<List<User>> response = ResponseEntity.ok(allUsers);
+        return response;
     }
 
     @PostMapping("/users")

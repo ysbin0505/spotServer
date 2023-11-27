@@ -7,9 +7,9 @@ import lombok.Setter;
 @Setter
 public class ApiResponse<T> {
 
-    private static final String SUCCESS_STATUS = "success";
-    private static final String FAIL_STATUS = "fail";
-    private static final String ERROR_STATUS = "error";
+    public static final String SUCCESS_STATUS = "success";
+    public static final String FAIL_STATUS = "fail";
+    public static final String ERROR_STATUS = "error";
 
     private String status;
     private T data;

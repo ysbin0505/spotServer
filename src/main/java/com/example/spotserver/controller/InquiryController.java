@@ -1,12 +1,17 @@
 package com.example.spotserver.controller;
 
 import com.example.spotserver.domain.ApiResponse;
+import com.example.spotserver.domain.ImageFile;
+import com.example.spotserver.domain.ImageStore;
 import com.example.spotserver.domain.Inquiry;
+import com.example.spotserver.service.ImageFileService;
 import com.example.spotserver.service.InquiryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,14 +20,27 @@ import java.util.List;
 public class InquiryController {
 
     private InquiryService inquiryService;
+    private ImageFileService imageFileService;
+    private ImageStore imageStore;
 
     @Autowired
-    public InquiryController(InquiryService inquiryService) {
+    public InquiryController(InquiryService inquiryService, ImageFileService imageFileService, ImageStore imageStore) {
         this.inquiryService = inquiryService;
+        this.imageFileService = imageFileService;
+        this.imageStore = imageStore;
     }
 
     @PostMapping("/inquirys")
-    public ApiResponse addInquiry(@RequestBody Inquiry inquiry) {
+    public ApiResponse addInquiry(@RequestPart Inquiry inquiry, @RequestPart(required = false) List<MultipartFile> files) throws IOException {
+        System.out.println("inquiry = " + inquiry);
+        System.out.println("files = " + files);
+
+        if(files != null) {
+            List<ImageFile> imgFiles = imageStore.storeImages(files);
+            imageFileService.saveImageList(imgFiles);
+            inquiry.setImages(imgFiles);
+        }
+
         inquiryService.addInquiry(inquiry);
         ApiResponse response = new ApiResponse<Inquiry>();
         response.setStatus("성공");

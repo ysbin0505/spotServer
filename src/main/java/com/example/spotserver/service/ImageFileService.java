@@ -21,4 +21,9 @@ public class ImageFileService {
     public void saveImageList(List<ImageFile> imageList) {
         imageFileRepository.saveAll(imageList);
     }
+
+    public List<ImageFile> getImageList(Long inquiryId) {
+        List<ImageFile> imageFiles = imageFileRepository.findByInquiryId(inquiryId);
+        return imageFiles;
+    }
 }

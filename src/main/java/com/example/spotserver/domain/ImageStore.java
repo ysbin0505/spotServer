@@ -39,8 +39,8 @@ public class ImageStore {
         return result;
     }
 
-    public List<LocationImageFile> storeLocationImages(List<MultipartFile> images) throws IOException {
-        List<LocationImageFile> result = new ArrayList<>();
+    public List<LocationImage> storeLocationImages(List<MultipartFile> images) throws IOException {
+        List<LocationImage> result = new ArrayList<>();
 
         for (MultipartFile image : images) {
             String uploadFileName = image.getOriginalFilename();
@@ -52,7 +52,7 @@ public class ImageStore {
             String storeFileName = uuid + "." + ext;
 
             image.transferTo(new File(getLocationImgFullPath(storeFileName)));
-            result.add(new LocationImageFile(uploadFileName, storeFileName));
+            result.add(new LocationImage(uploadFileName, storeFileName));
         }
         return result;
     }

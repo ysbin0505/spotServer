@@ -20,5 +20,5 @@ public class Location {
 
     @OneToMany
     @JoinColumn(name="locationId")
-    private List<LocationImageFile> images;
+    private List<LocationImage> images;
 }

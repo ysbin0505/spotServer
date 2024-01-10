@@ -21,4 +21,9 @@ public class LocationService {
         return locationRepository.findByLatitudeBetweenAndLongitudeBetween(latitude-0.01, latitude+0.01, longitude-0.01, longitude+0.01);
     }
 
+    public Location addLocation(Location location) {
+        Location saveLocation = locationRepository.save(location);
+        return saveLocation;
+    }
+
 }

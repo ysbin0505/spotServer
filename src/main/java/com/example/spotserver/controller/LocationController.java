@@ -3,8 +3,6 @@ package com.example.spotserver.controller;
 import com.example.spotserver.domain.*;
 import com.example.spotserver.service.ImageFileService;
 import com.example.spotserver.service.LocationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,15 +36,19 @@ public class LocationController {
     @PostMapping
     public ApiResponse<Location> addLocation(@RequestPart Location location, @RequestPart(required = false) List<MultipartFile> files) throws IOException {
         if (files != null) {
-            List<LocationImageFile> imgFiles = imageStore.storeLocationImages(files);
+            List<LocationImage> imgFiles = imageStore.storeLocationImages(files);
             imageFileService.saveLocationImageList(imgFiles);
             location.setImages(imgFiles);
         }
+
+        locationService.addLocation(location);
 
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         apiResponse.setData(location);
         apiResponse.setMessage("올바른 데이터");
+
+        // 응답으로 받은 locationId는 null로 나오는데 어떻게 응답을 내줄까?
 
         return apiResponse;
     }

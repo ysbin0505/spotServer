@@ -1,10 +1,9 @@
 package com.example.spotserver.service;
 
 import com.example.spotserver.domain.ImageFile;
-import com.example.spotserver.domain.LocationImageFile;
+import com.example.spotserver.domain.LocationImage;
 import com.example.spotserver.repository.ImageFileRepository;
 import com.example.spotserver.repository.LocationImageFileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ImageFileService {
         imageFileRepository.saveAll(imageList);
     }
 
-    public void saveLocationImageList(List<LocationImageFile> imageList) {
+    public void saveLocationImageList(List<LocationImage> imageList) {
         locationImageFileRepository.saveAll(imageList);
     }
 

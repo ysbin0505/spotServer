@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class LocationImageFile {
+public class LocationImage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +19,7 @@ public class LocationImageFile {
     private String uploadFileName;
     private String storeFileName;
 
-    public LocationImageFile(String uploadFileName, String storeFileName) {
+    public LocationImage(String uploadFileName, String storeFileName) {
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
     }

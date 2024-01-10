@@ -13,12 +13,15 @@ import java.util.UUID;
 @Component
 public class ImageStore {
 
-    @Value("${file.dir}")
-    private String folderDir;
+    @Value("${inquiryImg.dir}")
+    private String inquiryImgDir;
+
+    @Value("${locationImg.dir}")
+    private String locationImgDir;
 
 
 
-    public List<ImageFile> storeImages(List<MultipartFile> images) throws IOException {
+    public List<ImageFile> storeInquiryImages(List<MultipartFile> images) throws IOException {
         List<ImageFile> result = new ArrayList<>();
 
         for (MultipartFile image : images) {
@@ -30,14 +33,37 @@ public class ImageStore {
 
             String storeFileName = uuid + "." + ext;
 
-            image.transferTo(new File(getFullPath(storeFileName)));
+            image.transferTo(new File(getInquiryImgFullPath(storeFileName)));
             result.add(new ImageFile(uploadFileName, storeFileName));
         }
         return result;
     }
 
+    public List<LocationImageFile> storeLocationImages(List<MultipartFile> images) throws IOException {
+        List<LocationImageFile> result = new ArrayList<>();
 
-    public String getFullPath(String imgageFileName) {
-        return folderDir+imgageFileName;
+        for (MultipartFile image : images) {
+            String uploadFileName = image.getOriginalFilename();
+
+            String uuid = UUID.randomUUID().toString();
+            int pos = uploadFileName.indexOf(".");
+            String ext = uploadFileName.substring(pos + 1);
+
+            String storeFileName = uuid + "." + ext;
+
+            image.transferTo(new File(getLocationImgFullPath(storeFileName)));
+            result.add(new LocationImageFile(uploadFileName, storeFileName));
+        }
+        return result;
+    }
+
+
+
+    public String getLocationImgFullPath(String imageFilName) {
+        return locationImgDir+imageFilName;
+    }
+
+    public String getInquiryImgFullPath(String imageFileName) {
+        return inquiryImgDir+imageFileName;
     }
 }

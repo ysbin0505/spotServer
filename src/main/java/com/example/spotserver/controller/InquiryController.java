@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
+@RequestMapping("/inquirys")
 public class InquiryController {
 
     private InquiryService inquiryService;
@@ -30,14 +31,12 @@ public class InquiryController {
         this.imageStore = imageStore;
     }
 
-    @PostMapping("/inquirys")
+    @PostMapping
     public ApiResponse addInquiry(@RequestPart Inquiry inquiry, @RequestPart(required = false) List<MultipartFile> files) throws IOException {
-        System.out.println("inquiry = " + inquiry);
-        System.out.println("files = " + files);
 
         if(files != null) {
-            List<ImageFile> imgFiles = imageStore.storeImages(files);
-            imageFileService.saveImageList(imgFiles);
+            List<ImageFile> imgFiles = imageStore.storeInquiryImages(files);
+            imageFileService.saveInquiryImageList(imgFiles);
             inquiry.setImages(imgFiles);
         }
 
@@ -49,7 +48,7 @@ public class InquiryController {
         return response;
     }
 
-    @GetMapping("/inquirys")
+    @GetMapping
     public ApiResponse getInquirys() {
         List<Inquiry> inquirys = inquiryService.getInquirys();
         ApiResponse response = new ApiResponse();
@@ -59,9 +58,9 @@ public class InquiryController {
         return response;
     }
 
-    @GetMapping("/inquirys/{id}")
-    public ApiResponse getInquiry(@PathVariable Long id) {
-        Inquiry inquiry = inquiryService.getInquiry(id);
+    @GetMapping("/{inquiry_id}")
+    public ApiResponse getInquiry(@PathVariable Long inquiry_id) {
+        Inquiry inquiry = inquiryService.getInquiry(inquiry_id);
         List<Inquiry> listInquiry = Arrays.asList(inquiry);
         ApiResponse response = new ApiResponse();
         response.setStatus(ApiResponse.SUCCESS_STATUS);

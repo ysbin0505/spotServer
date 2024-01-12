@@ -1,3 +1,5 @@
 
 - REST API 응답 성공 및 실패 형태
 - Optional 처리
+- AccessToken? 인증 추가해보기
+- 테스트 코드 작성

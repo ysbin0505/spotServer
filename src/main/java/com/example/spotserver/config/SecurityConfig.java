@@ -2,6 +2,7 @@ package com.example.spotserver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -10,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig {
 
 
@@ -27,8 +29,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request ->
                         request
                                 .requestMatchers("/user/**").authenticated() // 인증만 된다면 들어갈 수 있는 주소
-                                .requestMatchers("/manager/**").hasAnyRole("ADMIN", "MANAGER")
-                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                                .requestMatchers("/manager/**").hasAnyAuthority("admin", "manager")
+                                .requestMatchers("/admin/**").hasAuthority("admin")
                                 .anyRequest().permitAll())
                 .formLogin(formLogin -> formLogin
                         .usernameParameter("name")

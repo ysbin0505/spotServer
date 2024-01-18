@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -24,6 +25,12 @@ public class LocationService {
     public Location addLocation(Location location) {
         Location saveLocation = locationRepository.save(location);
         return saveLocation;
+    }
+
+    public Location getLocation(Long locationId) {
+        Optional<Location> location = locationRepository.findById(locationId);
+
+        return location.get();
     }
 
 }

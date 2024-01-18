@@ -53,4 +53,16 @@ public class LocationController {
         return apiResponse;
     }
 
+    @GetMapping("/{locationId}")
+    public ApiResponse<Location> getLocation(@PathVariable Long locationId) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
+
+        Location location = locationService.getLocation(locationId);
+        apiResponse.setData(location);
+
+        apiResponse.setMessage("올바른 데이터");
+        return apiResponse;
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.example.spotserver.config;
 
+import com.example.spotserver.config.jwt.JwtAuthenticationFilter;
 import com.example.spotserver.filter.MyFilter3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,12 +19,8 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private CorsFilter corsFilter;
+    private CorsConfig corsConfig;
 
-    @Autowired
-    public SecurityConfig(CorsFilter corsFilter) {
-        this.corsFilter = corsFilter;
-    }
 
     // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
     @Bean
@@ -30,10 +28,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    public SecurityConfig(CorsConfig corsConfig) {
+        this.corsConfig = corsConfig;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        System.out.println("SecurityConfig.filterChain");
         http.addFilterBefore(new MyFilter3(), SecurityContextPersistenceFilter.class);
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session ->
@@ -55,8 +56,21 @@ public class SecurityConfig {
                 httpBasic
                         .disable()); // 기본적인 HTTP 로그인 안쓰겠다. (ID, PW를 항상 포함하여 요청함)
 
-        http.addFilter(corsFilter);
+        http.apply(new MyCustomDsl());
+
         return http.build();
+    }
+
+    public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+            http
+                    .addFilter(corsConfig.corsFilter())
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+
+        }
     }
 
 }

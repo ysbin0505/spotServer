@@ -18,6 +18,8 @@ public class CorsConfig  {
         config.addAllowedHeader("*"); // 모든 헤더에 응답 허용
         config.addAllowedMethod("*"); // 모든 post, get, put, delete 등등 요청을 허용하겠다.
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+
+        CorsFilter corsFilter = new CorsFilter(source);
+        return corsFilter;
     }
 }

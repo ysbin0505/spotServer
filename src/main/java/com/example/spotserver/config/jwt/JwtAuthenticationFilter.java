@@ -1,5 +1,7 @@
 package com.example.spotserver.config.jwt;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.auth.PrincipalDetails;
 import com.example.spotserver.securityStudy.TestUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Date;
 
 // 스프링 시큐리티에서 UsernamePasswordAuthenticationFilter 필터가 있는데
 // "/login" 요청해서 유저네임, 패스워드를 post 요청하면 이 필터가 동작함.
@@ -50,9 +53,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             //DB에 있는 name과 pwd가 일치하면 authentication이 리턴됌.
             Authentication authentication =
                     authenticationManager.authenticate(authenticationToken);
-            System.out.println("로그인 성공. authentication = " + authentication);
             PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-            System.out.println("principalDetails = " + principalDetails.getTestUser());
 
             // authentication이 세션에 저장됌, 세션 굳이? 권한 관리를 시큐리티가 대신 해주기때문에 편하려고 세션 저장함.
             // JWT 토큰 사용하며 세션을 만들 이유는 없지만 권한처리때문에 session에 넣음
@@ -64,12 +65,19 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
 
-
     // attemptAuthentication 성공시 -> successfulAuth 실행 됌. 여기서 JWT 만들어서 응답하자.
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         System.out.println("로그인 성공");
-        super.successfulAuthentication(request, response, chain, authResult);
+        PrincipalDetails principal = (PrincipalDetails) authResult.getPrincipal();
+        String jwtToken = JWT.create()
+                .withSubject("톡톡토큰")
+                .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRE_TIME))
+                .withClaim("id", principal.getTestUser().getId())
+                .withClaim("name", principal.getUsername())
+                .sign(Algorithm.HMAC256(JwtProperties.SECRET_KEY));
+
+        response.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
     }
 
     @Override

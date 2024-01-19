@@ -1,7 +1,9 @@
 package com.example.spotserver.config;
 
 import com.example.spotserver.config.jwt.JwtAuthenticationFilter;
+import com.example.spotserver.config.jwt.JwtAuthorizationFilter;
 import com.example.spotserver.filter.MyFilter3;
+import com.example.spotserver.securityStudy.TestUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private CorsConfig corsConfig;
+    private TestUserRepository testUserRepository;
 
 
     // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
@@ -29,8 +32,9 @@ public class SecurityConfig {
     }
 
     @Autowired
-    public SecurityConfig(CorsConfig corsConfig) {
+    public SecurityConfig(CorsConfig corsConfig, TestUserRepository testUserRepository) {
         this.corsConfig = corsConfig;
+        this.testUserRepository = testUserRepository;
     }
 
     @Bean
@@ -68,7 +72,8 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager));
+                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, testUserRepository));
 
         }
     }

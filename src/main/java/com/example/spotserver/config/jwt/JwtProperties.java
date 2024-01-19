@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class JwtProperties {
 
     public static String SECRET_KEY;
-    public static int EXPIRE_TIME = 15000;
+    public static int EXPIRE_TIME = 1500000;
     public static String TOKEN_PREFIX = "Bearer ";
     public static String HEADER_STRING = "Authorization";
 

@@ -42,6 +42,8 @@ CREATE TABLE location_image (
 
 CREATE TABLE member (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(255),
+    login_pwd VARCHAR(255),
     name VARCHAR(255),
     reg_date DATETIME DEFAULT NOW(),
     type VARCHAR(10),

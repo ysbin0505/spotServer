@@ -3,7 +3,7 @@ package com.example.spotserver.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.auth.PrincipalDetails;
-import com.example.spotserver.securityStudy.TestUser;
+import com.example.spotserver.domain.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -44,11 +44,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();
-            TestUser testUser = objectMapper.readValue(request.getInputStream(), TestUser.class);
-            System.out.println("testUser = " + testUser);
+            Member member = objectMapper.readValue(request.getInputStream(), Member.class);
+            System.out.println("member = " + member);
 
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(testUser.getName(), testUser.getPassword());
+                    new UsernamePasswordAuthenticationToken(member.getLoginId(), member.getLoginPwd());
             //PrincipalDetailsService의 loadUserByUsername()가 실행
             //DB에 있는 name과 pwd가 일치하면 authentication이 리턴됌.
             Authentication authentication =
@@ -73,8 +73,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String jwtToken = JWT.create()
                 .withSubject("톡톡토큰")
                 .withExpiresAt(new Date(System.currentTimeMillis() + JwtProperties.EXPIRE_TIME))
-                .withClaim("id", principal.getTestUser().getId())
-                .withClaim("name", principal.getUsername())
+                .withClaim("id", principal.getMember().getId())
                 .sign(Algorithm.HMAC256(JwtProperties.SECRET_KEY));
 
         response.setHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);

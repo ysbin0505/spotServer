@@ -3,6 +3,7 @@ package com.example.spotserver.config;
 import com.example.spotserver.config.jwt.JwtAuthenticationFilter;
 import com.example.spotserver.config.jwt.JwtAuthorizationFilter;
 import com.example.spotserver.filter.MyFilter3;
+import com.example.spotserver.repository.MemberRepository;
 import com.example.spotserver.securityStudy.TestUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +23,7 @@ import org.springframework.web.filter.CorsFilter;
 public class SecurityConfig {
 
     private CorsConfig corsConfig;
-    private TestUserRepository testUserRepository;
+    private MemberRepository memberRepository;
 
 
     // 해당 메서드의 리턴되는 오브젝트를 IoC로 등록해준다.
@@ -31,10 +32,11 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Autowired
-    public SecurityConfig(CorsConfig corsConfig, TestUserRepository testUserRepository) {
+    public SecurityConfig(CorsConfig corsConfig, MemberRepository memberRepository) {
         this.corsConfig = corsConfig;
-        this.testUserRepository = testUserRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Bean
@@ -48,8 +50,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(request ->
                 request
                         .requestMatchers("/user/**").authenticated() // 인증만 된다면 들어갈 수 있는 주소
-                        .requestMatchers("/manager/**").hasAnyAuthority("admin", "manager")
-                        .requestMatchers("/admin/**").hasAuthority("admin")
+                        .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
+                        .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().permitAll());
 
         http.formLogin(formLogin ->
@@ -73,7 +75,7 @@ public class SecurityConfig {
             http
                     .addFilter(corsConfig.corsFilter())
                     .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                    .addFilter(new JwtAuthorizationFilter(authenticationManager, testUserRepository));
+                    .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
 
         }
     }

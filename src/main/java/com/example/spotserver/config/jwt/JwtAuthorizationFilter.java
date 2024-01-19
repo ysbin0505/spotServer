@@ -7,6 +7,8 @@ package com.example.spotserver.config.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.auth.PrincipalDetails;
+import com.example.spotserver.domain.Member;
+import com.example.spotserver.repository.MemberRepository;
 import com.example.spotserver.securityStudy.TestUser;
 import com.example.spotserver.securityStudy.TestUserRepository;
 import jakarta.servlet.FilterChain;
@@ -25,11 +27,12 @@ import java.util.Optional;
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
 
-    private TestUserRepository testUserRepository;
+    private MemberRepository memberRepository;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, TestUserRepository testUserRepository) {
+
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, MemberRepository memberRepository) {
         super(authenticationManager);
-        this.testUserRepository = testUserRepository;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -54,10 +57,10 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         // 서명이 정상적으로 됨
         if(id != null) {
             System.out.println("서명 통과");
-            TestUser testUser = testUserRepository.findById(id).get();
-            System.out.println("testUser = " + testUser);
+            Member member = memberRepository.findById(id).get();
+            System.out.println("member = " + member);
 
-            PrincipalDetails principalDetails = new PrincipalDetails(testUser);
+            PrincipalDetails principalDetails = new PrincipalDetails(member);
             Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 
             // 세션에 강제 등록

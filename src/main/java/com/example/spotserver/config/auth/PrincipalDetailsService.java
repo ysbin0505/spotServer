@@ -1,5 +1,7 @@
 package com.example.spotserver.config.auth;
 
+import com.example.spotserver.domain.Member;
+import com.example.spotserver.repository.MemberRepository;
 import com.example.spotserver.securityStudy.TestUser;
 import com.example.spotserver.securityStudy.TestUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +15,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class PrincipalDetailsService implements UserDetailsService {
 
-    private TestUserRepository testUserRepository;
+    private MemberRepository memberRepository;
+
 
     @Autowired
-    public PrincipalDetailsService(TestUserRepository testUserRepository) {
-        this.testUserRepository = testUserRepository;
+    public PrincipalDetailsService(MemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        TestUser testUser = testUserRepository.findByName(username);
-        return new PrincipalDetails(testUser);
+        Member member = memberRepository.findByLoginId(username);
+        return new PrincipalDetails(member);
     }
 }

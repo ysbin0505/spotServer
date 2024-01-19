@@ -21,6 +21,14 @@ public class MemberService {
         return addMember;
     }
 
+    public boolean existLoginId(String loginId) {
+        return memberRepository.existsByLoginId(loginId);
+    }
+
+    public boolean existName(String name) {
+        return memberRepository.existsByName(name);
+    }
+
     public boolean existKakaoMember(Long snsId) {
         return memberRepository.existsByTypeIsAndSnsId(MemberType.KAKAO, snsId);
     }

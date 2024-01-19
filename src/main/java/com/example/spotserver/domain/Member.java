@@ -13,8 +13,12 @@ public class Member {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String loginId;
+    private String loginPwd;
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @CreationTimestamp
     private LocalDateTime regDate;

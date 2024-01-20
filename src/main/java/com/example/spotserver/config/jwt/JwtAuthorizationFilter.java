@@ -9,8 +9,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.auth.PrincipalDetails;
 import com.example.spotserver.domain.Member;
 import com.example.spotserver.repository.MemberRepository;
-import com.example.spotserver.securityStudy.TestUser;
-import com.example.spotserver.securityStudy.TestUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

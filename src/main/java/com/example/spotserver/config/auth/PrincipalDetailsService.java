@@ -2,8 +2,6 @@ package com.example.spotserver.config.auth;
 
 import com.example.spotserver.domain.Member;
 import com.example.spotserver.repository.MemberRepository;
-import com.example.spotserver.securityStudy.TestUser;
-import com.example.spotserver.securityStudy.TestUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

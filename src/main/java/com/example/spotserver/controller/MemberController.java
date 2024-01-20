@@ -1,6 +1,10 @@
 package com.example.spotserver.controller;
 
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.example.spotserver.config.jwt.JwtProperties;
+import com.example.spotserver.domain.ApiResponse;
 import com.example.spotserver.domain.Member;
 import com.example.spotserver.domain.MemberType;
 import com.example.spotserver.domain.Role;
@@ -9,6 +13,10 @@ import com.example.spotserver.snsLogin.KakaoApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/members")
@@ -24,8 +32,8 @@ public class MemberController {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @PostMapping
-    public String addMember(@RequestBody Member member) {
+    @PostMapping("/signup")
+    public String signupMember(@RequestBody Member member) {
 
         String loginId = member.getLoginId();
         String name = member.getName();
@@ -42,6 +50,33 @@ public class MemberController {
         member.setType(MemberType.NORMAL);
         memberService.addMember(member);
         return "ok";
+    }
+
+    @PostMapping("/signin")
+    public ApiResponse signinMember(@RequestBody Member member) {
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        Member findMember = memberService.findByLoginId(member.getLoginId());
+        if(findMember!=null) {
+            if(bCryptPasswordEncoder.matches(member.getLoginPwd(), findMember.getLoginPwd())) {
+                Map<String, Object> data = new HashMap<>();
+                String token = memberService.createToken(findMember.getId());
+                data.put("token", token);
+                data.put("expire_in", JwtProperties.EXPIRE_TIME/1000);
+                apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
+                apiResponse.setData(data);
+                apiResponse.setMessage("성공적으로 로그인하였습니다.");
+                return apiResponse;
+            } else {
+                apiResponse.setStatus(ApiResponse.FAIL_STATUS);
+                apiResponse.setMessage("비밀번호가 일치하지 않습니다.");
+                return apiResponse;
+            }
+        }
+        apiResponse.setStatus(ApiResponse.FAIL_STATUS);
+        apiResponse.setMessage("존재하지 않는 회원입니다.");
+        return apiResponse;
     }
 
     @GetMapping("/signup/kakao")

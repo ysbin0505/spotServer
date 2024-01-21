@@ -82,7 +82,7 @@
 {
   "status": "success",
   "data": {
-    "id": 2,
+    "id": 3,
     "writer": {
       "id": 12,
       "name": "TESTNAME",
@@ -90,17 +90,9 @@
       "regDate": "2024-01-20T16:11:55",
       "type": "NORMAL"
     },
-    "location": {
-      "id": 4,
-      "latitude": 35.24154,
-      "longitude": 128.6957,
-      "title": "컴공 건물",
-      "address": "공대5호관",
-      "description": "끄아아악"
-    },
-    "title": "title2",
-    "content": "content2",
-    "regDate": "2024-01-21T14:29:40.905984"
+    "title": "title3",
+    "content": "content3",
+    "regDate": "2024-01-21T14:50:43.340146"
   },
   "message": "게시글 작성 성공."
 }

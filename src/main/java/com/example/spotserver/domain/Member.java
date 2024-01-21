@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@JsonIgnoreProperties(value = {"loginId","loginPwd","snsId"}, allowSetters = true, allowGetters = false)
+@JsonIgnoreProperties(value = {"loginId","loginPwd"}, allowSetters = true, allowGetters = false)
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

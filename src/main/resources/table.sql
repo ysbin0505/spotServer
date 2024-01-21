@@ -1,18 +1,22 @@
-CREATE TABLE inquiry (
+CREATE TABLE poster (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
+    member_id BIGINT,
+    location_id BIGINT,
     title VARCHAR(255),
     content VARCHAR(255),
-    reg_date DATETIME  DEFAULT NOW()
-)
+    reg_date DATETIME  DEFAULT NOW(),
+    FOREIGN KEY (member_id) REFERENCES member(id),
+    FOREIGN KEY (location_id) REFERENCES location(id)
+);
 
 CREATE TABLE comment (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    inquiry_id BIGINT NOT NULL,
-    name VARCHAR(255),
+    poster_id BIGINT,
+    member_id BIGINT,
     content VARCHAR(255),
     reg_date DATETIME DEFAULT NOW(),
-    FOREIGN KEY (inquiry_id) REFERENCES inquiry(id)
+    FOREIGN KEY (poster_id) REFERENCES poster(id),
+    FOREIGN KEY (member_id) REFERENCES member(id)
 );
 
 CREATE TABLE location (
@@ -24,13 +28,13 @@ CREATE TABLE location (
     description TEXT
 )
 
-CREATE TABLE image_file (
+CREATE TABLE poster_image (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    inquiry_id BIGINT,
+    poster_id BIGINT,
     upload_file_name VARCHAR(255),
     store_file_name VARCHAR(255),
-    FOREIGN KEY (inquiry_id) REFERENCES inquiry(id)
-)
+    FOREIGN KEY (poster_id) REFERENCES poster(id)
+);
 
 CREATE TABLE location_image (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,

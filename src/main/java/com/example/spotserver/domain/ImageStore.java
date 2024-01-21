@@ -14,15 +14,15 @@ import java.util.UUID;
 public class ImageStore {
 
     @Value("${inquiryImg.dir}")
-    private String inquiryImgDir;
+    private String posterImgDir;
 
     @Value("${locationImg.dir}")
     private String locationImgDir;
 
 
 
-    public List<ImageFile> storeInquiryImages(List<MultipartFile> images) throws IOException {
-        List<ImageFile> result = new ArrayList<>();
+    public List<PosterImage> storePosterImages(List<MultipartFile> images) throws IOException {
+        List<PosterImage> result = new ArrayList<>();
 
         for (MultipartFile image : images) {
             String uploadFileName = image.getOriginalFilename();
@@ -33,8 +33,8 @@ public class ImageStore {
 
             String storeFileName = uuid + "." + ext;
 
-            image.transferTo(new File(getInquiryImgFullPath(storeFileName)));
-            result.add(new ImageFile(uploadFileName, storeFileName));
+            image.transferTo(new File(getPosterImgFullPath(storeFileName)));
+            result.add(new PosterImage(uploadFileName, storeFileName));
         }
         return result;
     }
@@ -63,7 +63,7 @@ public class ImageStore {
         return locationImgDir+imageFilName;
     }
 
-    public String getInquiryImgFullPath(String imageFileName) {
-        return inquiryImgDir+imageFileName;
+    public String getPosterImgFullPath(String imageFileName) {
+        return posterImgDir+imageFileName;
     }
 }

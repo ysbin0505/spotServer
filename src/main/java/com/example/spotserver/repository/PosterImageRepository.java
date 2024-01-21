@@ -1,14 +1,14 @@
 package com.example.spotserver.repository;
 
-import com.example.spotserver.domain.ImageFile;
+import com.example.spotserver.domain.PosterImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ImageFileRepository extends JpaRepository<ImageFile, Long> {
+public interface PosterImageRepository extends JpaRepository<PosterImage, Long> {
 
-    List<ImageFile> findByInquiryId(Long inquiryId);
+    List<PosterImage> findByPosterId(Long posterId);
 
 }

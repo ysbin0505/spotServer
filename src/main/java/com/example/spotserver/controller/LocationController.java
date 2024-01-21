@@ -38,7 +38,10 @@ public class LocationController {
         if (files != null) {
             List<LocationImage> imgFiles = imageStore.storeLocationImages(files);
             imageFileService.saveLocationImageList(imgFiles);
-            location.setImages(imgFiles);
+
+            for (LocationImage imgFile : imgFiles) {
+                imgFile.setLocation(location);
+            }
         }
 
         locationService.addLocation(location);

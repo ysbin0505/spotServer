@@ -17,8 +17,4 @@ public class Location {
     private String title;
     private String address;
     private String description;
-
-    @OneToMany
-    @JoinColumn(name="locationId")
-    private List<LocationImage> images;
 }

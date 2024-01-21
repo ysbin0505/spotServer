@@ -1,5 +1,7 @@
 package com.example.spotserver.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,13 +10,16 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@JsonIgnoreProperties(value = {"loginId","loginPwd","snsId"}, allowSetters = true, allowGetters = false)
 public class Member {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private String loginId;
     private String loginPwd;
+
     private String name;
 
     @Enumerated(EnumType.STRING)

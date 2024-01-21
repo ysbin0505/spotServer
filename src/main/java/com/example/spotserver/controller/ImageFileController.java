@@ -1,6 +1,7 @@
 package com.example.spotserver.controller;
 
 import com.example.spotserver.domain.ApiResponse;
+import com.example.spotserver.domain.LocationImage;
 import com.example.spotserver.domain.PosterImage;
 import com.example.spotserver.domain.ImageStore;
 import com.example.spotserver.service.ImageFileService;
@@ -19,7 +20,6 @@ import java.nio.file.Files;
 import java.util.List;
 
 @RestController
-@RequestMapping("/imagefiles")
 public class ImageFileController {
 
     private ImageFileService imageFileService;
@@ -32,41 +32,48 @@ public class ImageFileController {
     }
 
 
-    @GetMapping("/posters/{posterId}")
+    @GetMapping("/posters/{posterId}/images")
     public ApiResponse<PosterImage> getPosterImageFilesInfo(@PathVariable Long posterId) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
 
-        List<PosterImage> imageList = imageFileService.getPosterImageList(posterId);
-        apiResponse.setData(imageList);
+        List<PosterImage> posterImageList = imageFileService.getPosterImageList(posterId);
+        apiResponse.setData(posterImageList);
 
         apiResponse.setMessage("요청 처리 완료.");
         return apiResponse;
     }
 
-    @GetMapping("/inquirys/{imagefileName}")
-    public ResponseEntity<Resource> getPosterImagefile(@PathVariable String imagefileName) throws IOException {
+    @GetMapping("/posters/images/{posterImageId}")
+    public ResponseEntity<Resource> getPosterImagefile(@PathVariable Long posterImageId) throws IOException {
+
+
+        PosterImage posterImage = imageFileService.getPosterImage(posterImageId);
+        String imagefileName = posterImage.getStoreFileName();
+
         UrlResource resource = new UrlResource("file:" + imageStore.getPosterImgFullPath(imagefileName));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(resource.getFile().toPath()))
                 .body(resource);
     }
 
-    @GetMapping("/locations/posters/{poster_id}")
-    public ApiResponse<PosterImage> getLocationImageFilesInfo(@PathVariable Long poster_id) {
+    @GetMapping("/locations/{locationId}/images")
+    public ApiResponse<LocationImage> getLocationImageFilesInfo(@PathVariable Long locationId) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
 
-        //List<ImageFile> imageList = imageFileService.getInquiryImageList(poster_id);
-        List<PosterImage> imageList = null;
-        apiResponse.setData(imageList);
+        List<LocationImage> locationImageList = imageFileService.getLocationImageList(locationId);
+        apiResponse.setData(locationImageList);
 
         apiResponse.setMessage("요청 처리 완료.");
         return apiResponse;
     }
 
-    @GetMapping("/locations/{imagefileName}")
-    public ResponseEntity<Resource> getLocationImagefile(@PathVariable String imagefileName) throws IOException {
+    @GetMapping("/locations/images/{locationImageId}")
+    public ResponseEntity<Resource> getLocationImagefile(@PathVariable Long locationImageId) throws IOException {
+
+        LocationImage locationImage = imageFileService.getLocationImage(locationImageId);
+        String imagefileName = locationImage.getStoreFileName();
         UrlResource resource = new UrlResource("file:" + imageStore.getLocationImgFullPath(imagefileName));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(resource.getFile().toPath()))

@@ -58,6 +58,8 @@
 
 </table>
 
+### LOCATION
+
 ### POSTER
 
 <table>
@@ -108,7 +110,7 @@
 <td>
 
 ```json
-{"미작성" : "미작성"}
+
 ```
 
 </td>
@@ -186,7 +188,115 @@
 
 </table>
 
-
 ### COMMENT
 
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Request</th>
+            <th>Response</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
 ### IMAGEFILE
+
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Request</th>
+            <th>Response</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>GET</td>
+            <td>/posters/{posterId}/images</td>
+            <td></td>
+<td>
+
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 1,
+            "uploadFileName": "3.png",
+            "storeFileName": "993d33cc-c8e3-4dd2-9be7-4186e7110878.png"
+        }
+    ],
+    "message": "요청 처리 완료."
+}
+```
+
+</td>
+            <td>특정 게시글의 첨부 이미지 목록 조회</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/posters/images/{posterImageId}</td>
+            <td></td>
+            <td>(body에 이미지파일. 아니면 파일 자체 링크로도 좋을듯)</td>
+            <td>특정 이미지 조회</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/locations/{locationId}/images</td>
+            <td></td>
+<td>
+
+```json
+{
+    "status": "success",
+    "data": [
+        {
+            "id": 8,
+            "uploadFileName": "3.png",
+            "storeFileName": "993d33cc-c8e3-4dd2-9be78.png"
+        }
+    ],
+    "message": "요청 처리 완료."
+}
+```
+
+</td>
+            <td>특정 장소의 첨부 이미지 목록 조회</td>
+        </tr>
+        <tr>
+            <td>GET</td>
+            <td>/locations/images/{locationImageId}</td>
+            <td></td>
+            <td>(body에 이미지파일. 아니면 파일 자체 링크도 좋을듯)</td>
+            <td>특정 이미지 조회</td>
+        </tr>
+    </tbody>
+</table>

@@ -8,6 +8,8 @@ import com.example.spotserver.domain.ApiResponse;
 import com.example.spotserver.domain.Member;
 import com.example.spotserver.domain.MemberType;
 import com.example.spotserver.domain.Role;
+import com.example.spotserver.dto.request.MemberRequest;
+import com.example.spotserver.dto.response.MemberResponse;
 import com.example.spotserver.service.MemberService;
 import com.example.spotserver.snsLogin.KakaoApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +35,39 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public String signupMember(@RequestBody Member member) {
+    public ApiResponse signupMember(@RequestBody MemberRequest memberRequest) {
+
+        ApiResponse apiResponse = new ApiResponse();
+
+        System.out.println("memberRequest = " + memberRequest);
+        Member member = memberRequest.toEntity(memberRequest);
+        System.out.println("member = " + member);
 
         String loginId = member.getLoginId();
         String name = member.getName();
 
         if(loginId == null || memberService.existLoginId(loginId)) {
-            return "아이디 중복 또는 빈칸";
+            apiResponse.setStatus(ApiResponse.FAIL_STATUS);
+            apiResponse.setMessage("아이디 중복 또는 빈칸");
+            return apiResponse;
         }
         if(name == null || memberService.existName(name)) {
-            return "닉네임 중복 또는 빈칸";
+            apiResponse.setStatus(ApiResponse.FAIL_STATUS);
+            apiResponse.setMessage("닉네임 중복 또는 빈칸");
+            return apiResponse;
         }
 
+        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         member.setRole(Role.USER);
         member.setLoginPwd(bCryptPasswordEncoder.encode(member.getLoginPwd()));
         member.setType(MemberType.NORMAL);
         memberService.addMember(member);
-        return "ok";
+
+        MemberResponse memberResponse = new MemberResponse();
+        memberResponse = memberResponse.toDto(member);
+        apiResponse.setData(memberResponse);
+        apiResponse.setMessage("성공적으로 회원가입을 완료했습니다.");
+        return apiResponse;
     }
 
     @PostMapping("/signin")

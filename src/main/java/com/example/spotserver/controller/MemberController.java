@@ -1,22 +1,22 @@
 package com.example.spotserver.controller;
 
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.jwt.JwtProperties;
-import com.example.spotserver.domain.ApiResponse;
-import com.example.spotserver.domain.Member;
-import com.example.spotserver.domain.MemberType;
-import com.example.spotserver.domain.Role;
-import com.example.spotserver.dto.request.MemberRequest;
+import com.example.spotserver.domain.*;
+import com.example.spotserver.dto.request.SignInMember;
+import com.example.spotserver.dto.request.SignUpMember;
 import com.example.spotserver.dto.response.MemberResponse;
+import com.example.spotserver.exception.DuplicateException;
+import com.example.spotserver.exception.ErrorMsg;
+import com.example.spotserver.exception.LoginFailException;
 import com.example.spotserver.service.MemberService;
 import com.example.spotserver.snsLogin.KakaoApi;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,29 +35,24 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ApiResponse signupMember(@RequestBody MemberRequest memberRequest) {
+    public ApiResponse signupMember(@Valid @RequestBody SignUpMember signUpMember) throws DuplicateException {
 
         ApiResponse apiResponse = new ApiResponse();
 
-        System.out.println("memberRequest = " + memberRequest);
-        Member member = memberRequest.toEntity(memberRequest);
-        System.out.println("member = " + member);
 
-        String loginId = member.getLoginId();
-        String name = member.getName();
+        String loginId = signUpMember.getLoginId();
+        String name = signUpMember.getName();
 
-        if(loginId == null || memberService.existLoginId(loginId)) {
-            apiResponse.setStatus(ApiResponse.FAIL_STATUS);
-            apiResponse.setMessage("아이디 중복 또는 빈칸");
-            return apiResponse;
+        if (memberService.existLoginId(loginId)) {
+            throw new DuplicateException(ErrorMsg.DUPLICATE_LOGINID);
         }
-        if(name == null || memberService.existName(name)) {
-            apiResponse.setStatus(ApiResponse.FAIL_STATUS);
-            apiResponse.setMessage("닉네임 중복 또는 빈칸");
-            return apiResponse;
+
+        if (memberService.existName(name)) {
+            throw new DuplicateException(ErrorMsg.DUPLICATE_NAME);
         }
 
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
+        Member member = signUpMember.toEntity(signUpMember);
         member.setRole(Role.USER);
         member.setLoginPwd(bCryptPasswordEncoder.encode(member.getLoginPwd()));
         member.setType(MemberType.NORMAL);
@@ -66,48 +61,60 @@ public class MemberController {
         MemberResponse memberResponse = new MemberResponse();
         memberResponse = memberResponse.toDto(member);
         apiResponse.setData(memberResponse);
-        apiResponse.setMessage("성공적으로 회원가입을 완료했습니다.");
         return apiResponse;
     }
 
     @PostMapping("/signin")
-    public ApiResponse signinMember(@RequestBody Member member) {
+    public ApiResponse signinMember(@Valid @RequestBody SignInMember signInMember) throws LoginFailException {
 
         ApiResponse apiResponse = new ApiResponse();
 
-        Member findMember = memberService.findByLoginId(member.getLoginId());
-        if(findMember!=null) {
-            if(bCryptPasswordEncoder.matches(member.getLoginPwd(), findMember.getLoginPwd())) {
-                Map<String, Object> data = new HashMap<>();
-                String token = memberService.createToken(findMember.getId());
-                data.put("token", token);
-                data.put("expire_in", JwtProperties.EXPIRE_TIME/1000);
-                apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
-                apiResponse.setData(data);
-                apiResponse.setMessage("성공적으로 로그인하였습니다.");
-                return apiResponse;
-            } else {
-                apiResponse.setStatus(ApiResponse.FAIL_STATUS);
-                apiResponse.setMessage("비밀번호가 일치하지 않습니다.");
-                return apiResponse;
-            }
-        }
-        apiResponse.setStatus(ApiResponse.FAIL_STATUS);
-        apiResponse.setMessage("존재하지 않는 회원입니다.");
+        String loginId = signInMember.getLoginId();
+        String loginPwd = signInMember.getLoginPwd();
+
+        Member findMember = memberService.findByLoginId(loginId);
+
+        if (findMember == null)
+            throw new LoginFailException(ErrorMsg.FAIL_LOGIN);
+        if (!bCryptPasswordEncoder.matches(loginPwd, findMember.getLoginPwd()))
+            throw new LoginFailException(ErrorMsg.FAIL_LOGIN);
+
+        Map<String, Object> tokenInfo = new HashMap<>();
+        String token = memberService.createToken(findMember.getId());
+        tokenInfo.put("token", token);
+        tokenInfo.put("expire_in", JwtProperties.EXPIRE_TIME / 1000);
+        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
+        apiResponse.setData(tokenInfo);
         return apiResponse;
     }
 
-    @GetMapping("/signup/kakao")
+//    @GetMapping("/signup/kakao")
     public String addKakaoMember(@RequestHeader("Authorization") String access_token) {
         Long snsId = KakaoApi.getTokenInfo(access_token);
 
-        if(memberService.existKakaoMember(snsId)) {
+        if (memberService.existKakaoMember(snsId)) {
             return "이미 존재하는 회원입니다.";
         } else {
             Member member = KakaoApi.getMemberInfo(access_token);
             memberService.addMember(member);
             return "회원가입 완료.";
         }
+    }
+
+    @ExceptionHandler(value = DuplicateException.class)
+    public ErrorResponse duplicateException(DuplicateException e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorCode(HttpStatus.CONFLICT.value());
+        errorResponse.setMessage(e.getMessage());
+        return errorResponse;
+    }
+
+    @ExceptionHandler(value = LoginFailException.class)
+    public ErrorResponse loginFailException(LoginFailException e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorCode(HttpStatus.UNAUTHORIZED.value());
+        errorResponse.setMessage(e.getMessage());
+        return errorResponse;
     }
 
 }

@@ -1,11 +1,45 @@
 # API 명세서
 
+### 에러 메시지 형식
+
+에러 메시지의 형식은 JSON이며 다음과 같이 코드와 메시지를 받는다.
+
+```json
+{
+  "errorCode": 400,
+  "message": "아이디를 비울 수 없습니다."
+}
+```
+
+우리 서비스만의 에러인 경우 errorCode는 문자열이 될 수 있으며<br>
+그럴경우 요청한 API의 에러 코드에 상세히 명시한다.
+
+
+
+#### 주요 에러 코드
+
+<table>
+    <thead>
+        <tr>
+            <th>에러 코드</th>
+            <th>설명</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>400</td>
+            <td>API 요청시 필요한 필수 정보가 없습니다.</td>
+        </tr>
+    </tbody>
+</table>
+
+
 ### MEMBER
 
 <table>
   <td>Method</td>
   <td>URL</td>
-  <td>Request</td>
+  <td>Request Body</td>
   <td>Response</td>
   <td>Description</td>
   <tr>
@@ -22,7 +56,20 @@
 ```
 
   </td>
-    <td>회원가입 응답(미작성)</td>
+<td>
+
+```json
+{
+  "status": "success",
+  "data": {
+    "id": 3,
+    "name": "nickname",
+    "role": "USER"
+  }
+}
+```
+
+</td>
     <td>회원가입</td>
   </tr>
 
@@ -33,8 +80,8 @@
 
 ```json
 {
-  "loginId": "LSM",
-  "loginPwd": "1234"
+  "loginId": "아이디",
+  "loginPwd": "비밀번호"
 }
 ```
 
@@ -47,8 +94,7 @@
   "data": {
     "expire_in": 1500,
     "token": "tokenString"
-  },
-  "message": "성공적으로 로그인하였습니다."
+  }
 }
 ```
 
@@ -58,7 +104,67 @@
 
 </table>
 
+#### 에러 코드
+
+<table>
+    <thead>
+        <tr>
+            <th>에러 코드</th>
+            <th>설명</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>400</td>
+            <td>아이디, 비밀번호 또는 닉네임을 입력하지 않음</td>
+        </tr>
+        <tr>
+            <td>401</td>
+            <td>잘못된 아이디, 비밀번호를 입력 했음</td>
+        </tr>
+        <tr>
+            <td>409</td>
+            <td>이미 다른 유저가 사용중인 닉네임 또는 아이디를 등록</td>
+        </tr>
+    </tbody>
+</table>
+
 ### LOCATION
+
+<table>
+    <thead>
+        <tr>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Request</th>
+            <th>Response</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
 
 ### POSTER
 
@@ -246,15 +352,15 @@
 
 ```json
 {
-    "status": "success",
-    "data": [
-        {
-            "id": 1,
-            "uploadFileName": "3.png",
-            "storeFileName": "993d33cc-c8e3-4dd2-9be7-4186e7110878.png"
-        }
-    ],
-    "message": "요청 처리 완료."
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "uploadFileName": "3.png",
+      "storeFileName": "993d33cc-c8e3-4dd2-9be7-4186e7110878.png"
+    }
+  ],
+  "message": "요청 처리 완료."
 }
 ```
 
@@ -276,15 +382,15 @@
 
 ```json
 {
-    "status": "success",
-    "data": [
-        {
-            "id": 8,
-            "uploadFileName": "3.png",
-            "storeFileName": "993d33cc-c8e3-4dd2-9be78.png"
-        }
-    ],
-    "message": "요청 처리 완료."
+  "status": "success",
+  "data": [
+    {
+      "id": 8,
+      "uploadFileName": "3.png",
+      "storeFileName": "993d33cc-c8e3-4dd2-9be78.png"
+    }
+  ],
+  "message": "요청 처리 완료."
 }
 ```
 

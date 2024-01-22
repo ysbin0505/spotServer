@@ -7,13 +7,14 @@ import com.example.spotserver.dto.request.SignInMember;
 import com.example.spotserver.dto.request.SignUpMember;
 import com.example.spotserver.dto.response.MemberResponse;
 import com.example.spotserver.exception.DuplicateException;
-import com.example.spotserver.exception.ErrorMsg;
+import com.example.spotserver.exception.ErrorCode;
 import com.example.spotserver.exception.LoginFailException;
 import com.example.spotserver.service.MemberService;
 import com.example.spotserver.snsLogin.KakaoApi;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,23 +36,19 @@ public class MemberController {
     }
 
     @PostMapping("/signup")
-    public ApiResponse signupMember(@Valid @RequestBody SignUpMember signUpMember) throws DuplicateException {
-
-        ApiResponse apiResponse = new ApiResponse();
-
+    public ResponseEntity<MemberResponse> signupMember(@Valid @RequestBody SignUpMember signUpMember) throws DuplicateException {
 
         String loginId = signUpMember.getLoginId();
         String name = signUpMember.getName();
 
         if (memberService.existLoginId(loginId)) {
-            throw new DuplicateException(ErrorMsg.DUPLICATE_LOGINID);
+            throw new DuplicateException(ErrorCode.DUPLICATE_LOGINID);
         }
 
         if (memberService.existName(name)) {
-            throw new DuplicateException(ErrorMsg.DUPLICATE_NAME);
+            throw new DuplicateException(ErrorCode.DUPLICATE_NAME);
         }
 
-        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         Member member = signUpMember.toEntity(signUpMember);
         member.setRole(Role.USER);
         member.setLoginPwd(bCryptPasswordEncoder.encode(member.getLoginPwd()));
@@ -60,12 +57,14 @@ public class MemberController {
 
         MemberResponse memberResponse = new MemberResponse();
         memberResponse = memberResponse.toDto(member);
-        apiResponse.setData(memberResponse);
-        return apiResponse;
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(memberResponse);
     }
 
     @PostMapping("/signin")
-    public ApiResponse signinMember(@Valid @RequestBody SignInMember signInMember) throws LoginFailException {
+    public ResponseEntity<Map> signinMember(@Valid @RequestBody SignInMember signInMember) throws LoginFailException {
 
         ApiResponse apiResponse = new ApiResponse();
 
@@ -75,17 +74,17 @@ public class MemberController {
         Member findMember = memberService.findByLoginId(loginId);
 
         if (findMember == null)
-            throw new LoginFailException(ErrorMsg.FAIL_LOGIN);
+            throw new LoginFailException(ErrorCode.FAIL_LOGIN);
         if (!bCryptPasswordEncoder.matches(loginPwd, findMember.getLoginPwd()))
-            throw new LoginFailException(ErrorMsg.FAIL_LOGIN);
+            throw new LoginFailException(ErrorCode.FAIL_LOGIN);
 
         Map<String, Object> tokenInfo = new HashMap<>();
         String token = memberService.createToken(findMember.getId());
         tokenInfo.put("token", token);
         tokenInfo.put("expire_in", JwtProperties.EXPIRE_TIME / 1000);
-        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
-        apiResponse.setData(tokenInfo);
-        return apiResponse;
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(tokenInfo);
     }
 
 //    @GetMapping("/signup/kakao")
@@ -102,19 +101,25 @@ public class MemberController {
     }
 
     @ExceptionHandler(value = DuplicateException.class)
-    public ErrorResponse duplicateException(DuplicateException e) {
+    public ResponseEntity<ErrorResponse> duplicateException(DuplicateException e) {
+        ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorCode(HttpStatus.CONFLICT.value());
-        errorResponse.setMessage(e.getMessage());
-        return errorResponse;
+        errorResponse.setErrorCode(errorCode.name());
+        errorResponse.setMessage(errorCode.getMessage());
+        return ResponseEntity
+                .status(errorCode.getHttpStatus())
+                .body(errorResponse);
     }
 
     @ExceptionHandler(value = LoginFailException.class)
-    public ErrorResponse loginFailException(LoginFailException e) {
+    public ResponseEntity<ErrorResponse> loginFailException(LoginFailException e) {
+        ErrorCode errorCode = e.getErrorCode();
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorCode(HttpStatus.UNAUTHORIZED.value());
-        errorResponse.setMessage(e.getMessage());
-        return errorResponse;
+        errorResponse.setErrorCode(errorCode.name());
+        errorResponse.setMessage(errorCode.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(errorResponse);
     }
 
 }

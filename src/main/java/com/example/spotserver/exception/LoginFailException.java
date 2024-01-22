@@ -1,8 +1,14 @@
 package com.example.spotserver.exception;
 
+import lombok.Getter;
+
+@Getter
 public class LoginFailException extends Exception{
 
-    public LoginFailException(String message) {
-        super(message);
+    private ErrorCode errorCode;
+
+    public LoginFailException(ErrorCode errorCode) {
+        super(errorCode.getMessage());
+        this.errorCode = errorCode;
     }
 }

@@ -2,17 +2,16 @@
 
 ### 에러 메시지 형식
 
-에러 메시지의 형식은 JSON이며 다음과 같이 코드와 메시지를 받는다.
+에러 메시지의 형식은 JSON이며 다음과 같이 코드와 메시지를 갖는다.
 
 ```json
 {
-  "errorCode": 400,
+  "errorCode": "NOT_VALID",
   "message": "아이디를 비울 수 없습니다."
 }
 ```
 
-우리 서비스만의 에러인 경우 errorCode는 문자열이 될 수 있으며<br>
-그럴경우 요청한 API의 에러 코드에 상세히 명시한다.
+해당 에러 코드에 대한 상세한 내용은 message로 제공되며, 응답의 HTTP 상태 코드 또한 포함됩니다. 
 
 
 
@@ -21,14 +20,18 @@
 <table>
     <thead>
         <tr>
-            <th>에러 코드</th>
+            <th>HTTP 상태 코드</th>
             <th>설명</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td>400</td>
+            <td>400 Bad Request</td>
             <td>API 요청시 필요한 필수 정보가 없습니다.</td>
+        </tr>
+        <tr>
+            <td>401 Unauthorized</td>
+            <td>인증 오류로 토큰 또는 로그인 정보가 틀립니다.</td>
         </tr>
     </tbody>
 </table>
@@ -60,12 +63,9 @@
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "id": 3,
-    "name": "nickname",
-    "role": "USER"
-  }
+  "id": 4,
+  "name": "TESTNAME",
+  "role": "USER"
 }
 ```
 
@@ -90,11 +90,8 @@
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "expire_in": 1500,
-    "token": "tokenString"
-  }
+  "expire_in": 1500,
+  "token": "tokenString"
 }
 ```
 
@@ -109,22 +106,29 @@
 <table>
     <thead>
         <tr>
+            <th>HTTP 상태 코드</th>
             <th>에러 코드</th>
-            <th>설명</th>
+            <th>에러 메시지</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>400</td>
+            <td>"NOT_VALID"</td>
             <td>아이디, 비밀번호 또는 닉네임을 입력하지 않음</td>
         </tr>
         <tr>
             <td>401</td>
+            <td>"FAIL_LOGIN"</td>
             <td>잘못된 아이디, 비밀번호를 입력 했음</td>
         </tr>
         <tr>
-            <td>409</td>
-            <td>이미 다른 유저가 사용중인 닉네임 또는 아이디를 등록</td>
+            <td rowspan="2">409</td>
+            <td>"DUPLICATE_LOGINID"</td>
+            <td rowspan="2">이미 다른 유저가 사용중인 닉네임 또는 아이디를 등록</td>
+        </tr>
+        <tr>
+            <td>"DUPLICATE_NAME"</td>
         </tr>
     </tbody>
 </table>

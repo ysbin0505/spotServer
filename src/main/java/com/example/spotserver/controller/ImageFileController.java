@@ -40,7 +40,6 @@ public class ImageFileController {
         List<PosterImage> posterImageList = imageFileService.getPosterImageList(posterId);
         apiResponse.setData(posterImageList);
 
-        apiResponse.setMessage("요청 처리 완료.");
         return apiResponse;
     }
 
@@ -65,7 +64,6 @@ public class ImageFileController {
         List<LocationImage> locationImageList = imageFileService.getLocationImageList(locationId);
         apiResponse.setData(locationImageList);
 
-        apiResponse.setMessage("요청 처리 완료.");
         return apiResponse;
     }
 

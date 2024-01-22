@@ -29,7 +29,6 @@ public class LocationController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         apiResponse.setData(locations);
-        apiResponse.setMessage("올바른 데이터");
         return apiResponse;
     }
 
@@ -49,7 +48,6 @@ public class LocationController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         apiResponse.setData(location);
-        apiResponse.setMessage("올바른 데이터");
 
         // 응답으로 받은 locationId는 null로 나오는데 어떻게 응답을 내줄까?
 
@@ -64,7 +62,6 @@ public class LocationController {
         Location location = locationService.getLocation(locationId);
         apiResponse.setData(location);
 
-        apiResponse.setMessage("올바른 데이터");
         return apiResponse;
     }
 

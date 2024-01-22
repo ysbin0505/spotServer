@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -40,8 +39,6 @@ public class PosterController {
         Location location = locationService.getLocation(locationId);
 
         if(location == null) {
-            apiResponse.setStatus(ApiResponse.FAIL_STATUS);
-            apiResponse.setMessage("장소가 존재하지 않음.");
             return apiResponse;
         }
 
@@ -58,7 +55,6 @@ public class PosterController {
         poster.setWriter(member);
         posterService.addPoster(poster);
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
-        apiResponse.setMessage("게시글 작성 성공.");
         apiResponse.setData(poster);
         return apiResponse;
     }
@@ -70,7 +66,6 @@ public class PosterController {
         List<Poster> posters = posterService.getLocationPosters(location);
         ApiResponse response = new ApiResponse();
         response.setStatus(ApiResponse.SUCCESS_STATUS);
-        response.setMessage("전체 게시글 조회 성공.");
         response.setData(posters);
         return response;
     }
@@ -81,7 +76,6 @@ public class PosterController {
         ApiResponse response = new ApiResponse();
         response.setStatus(ApiResponse.SUCCESS_STATUS);
         response.setData(poster);
-        response.setMessage("특정 게시글 조회 성공.");
         return response;
     }
 

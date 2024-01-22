@@ -33,7 +33,6 @@ public class CommentController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         apiResponse.setData(comment);
-        apiResponse.setMessage("댓글 작성 완료");
         return apiResponse;
     }
 
@@ -44,7 +43,6 @@ public class CommentController {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
         apiResponse.setData(comments);
-        apiResponse.setMessage("전체 댓글 조회 완료");
         return apiResponse;
     }
 

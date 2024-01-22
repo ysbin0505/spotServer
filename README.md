@@ -43,7 +43,7 @@
   <td>Method</td>
   <td>URL</td>
   <td>Request Body</td>
-  <td>Response</td>
+  <td>Response Body</td>
   <td>Description</td>
   <tr>
     <td>POST</td>
@@ -100,6 +100,32 @@
   </tr>
 
 </table>
+
+#### 로그인
+##### 응답
+
+<table>
+    <thead>
+        <tr>
+            <th>이름</th>
+            <th>타입</th>
+            <th>설명</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>expire_in</td>
+            <td>Long</td>
+            <td>토큰 만료 시간을 나타내며 단위는 초이다.</td>
+        </tr>
+        <tr>
+            <td>token</td>
+            <td>String</td>
+            <td>사용자 토큰 값</td>
+        </tr>
+    </tbody>
+</table>
+
 
 #### 에러 코드
 

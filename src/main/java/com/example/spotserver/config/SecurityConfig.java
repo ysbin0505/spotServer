@@ -1,5 +1,7 @@
 package com.example.spotserver.config;
 
+import com.example.spotserver.config.jwt.JwtAccessDenyHandler;
+import com.example.spotserver.config.jwt.JwtAuthenticationEntryPoint;
 import com.example.spotserver.config.jwt.JwtAuthenticationFilter;
 import com.example.spotserver.config.jwt.JwtAuthorizationFilter;
 import com.example.spotserver.filter.MyFilter3;
@@ -7,13 +9,17 @@ import com.example.spotserver.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.context.SecurityContextPersistenceFilter;
 
 @Configuration
@@ -47,10 +53,10 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(request ->
                 request
-                        .requestMatchers("/user/**").authenticated() // 인증만 된다면 들어갈 수 있는 주소
-                        .requestMatchers("/manager/**").hasAnyAuthority("ADMIN", "MANAGER")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
-                        .anyRequest().permitAll());
+                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/members/signup", "/members/signin").permitAll()
+                        .anyRequest().authenticated());
 
         http.formLogin(formLogin ->
                 formLogin
@@ -62,6 +68,10 @@ public class SecurityConfig {
 
         http.apply(new MyCustomDsl());
 
+        http.exceptionHandling(e -> e
+                .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
+                .accessDeniedHandler(new JwtAccessDenyHandler()));
+
         return http.build();
     }
 
@@ -72,7 +82,6 @@ public class SecurityConfig {
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(new JwtAuthenticationFilter(authenticationManager))
                     .addFilter(new JwtAuthorizationFilter(authenticationManager, memberRepository));
 
         }

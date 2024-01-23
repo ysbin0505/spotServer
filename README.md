@@ -15,23 +15,31 @@
 
 
 
-#### 주요 에러 코드
+#### 공통 에러 코드
 
 <table>
     <thead>
         <tr>
             <th>HTTP 상태 코드</th>
+            <th>에러 코드</th>
             <th>설명</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>400 Bad Request</td>
+            <td>"NOT_VALID"</td>
             <td>API 요청시 필요한 필수 정보가 없습니다.</td>
         </tr>
         <tr>
             <td>401 Unauthorized</td>
-            <td>인증 오류로 토큰 또는 로그인 정보가 틀립니다.</td>
+            <td>"UNAUTHORIZED_CLIENT"</td>
+            <td>토큰 정보가 없습니다.</td>
+        </tr>
+        <tr>
+            <td>403 Forbidden</td>
+            <td>"FORBIDDEN_CLIENT"</td>
+            <td>접근 권한이 없습니다.</td>
         </tr>
     </tbody>
 </table>

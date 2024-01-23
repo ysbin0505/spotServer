@@ -103,9 +103,7 @@ public class MemberController {
     @ExceptionHandler(value = DuplicateException.class)
     public ResponseEntity<ErrorResponse> duplicateException(DuplicateException e) {
         ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorCode(errorCode.name());
-        errorResponse.setMessage(errorCode.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(errorCode);
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
                 .body(errorResponse);
@@ -114,9 +112,7 @@ public class MemberController {
     @ExceptionHandler(value = LoginFailException.class)
     public ResponseEntity<ErrorResponse> loginFailException(LoginFailException e) {
         ErrorCode errorCode = e.getErrorCode();
-        ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorCode(errorCode.name());
-        errorResponse.setMessage(errorCode.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(errorCode);
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);

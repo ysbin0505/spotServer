@@ -1,6 +1,7 @@
 package com.example.spotserver.controller;
 
 import com.example.spotserver.domain.*;
+import com.example.spotserver.dto.request.LocationRequest;
 import com.example.spotserver.dto.response.LocationResponse;
 import com.example.spotserver.service.ImageFileService;
 import com.example.spotserver.service.LocationService;
@@ -42,8 +43,10 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<LocationResponse> addLocation(@RequestPart Location location,
+    public ResponseEntity<LocationResponse> addLocation(@RequestPart LocationRequest locationRequest,
                                                         @RequestPart(required = false) List<MultipartFile> files) throws IOException {
+
+        Location location = LocationRequest.toEntity(locationRequest);
 
         locationService.addLocation(location);
 

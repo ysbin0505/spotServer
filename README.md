@@ -1,9 +1,12 @@
 # API 명세서
+<hr>
 
 ### API 요청 헤더
 
 유저 정보가 필요 없는, 서버에서 인증 과정을 필요로하지 않는 요청은 Authorization 헤더가 필요 없지만<br>
 POST, PUT, DELETE와 같은 인증이 필요한 요청은 Authorization 헤더를 필요로 합니다.
+
+<br>
 
 <table>
     <thead>
@@ -13,13 +16,17 @@ POST, PUT, DELETE와 같은 인증이 필요한 요청은 Authorization 헤더�
     <tbody>
         <tr>
             <td>Authorization</td>
-            <td>인증을 필요로하는 요청을 하기 위해 접근 토큰(access_token)을 전달하는 헤더. Authorization : {토큰 타입} {토큰 값}</td>
+            <td>인증을 필요로하는 요청을 하기 위해 접근 토큰(access_token)을 전달하는 헤더. <br> Authorization : {토큰 타입} {토큰 값}</td>
         </tr>
     </tbody>
 </table>
 
-##### 요청 헤더 예
+#### 요청 헤더 예
 Authorization : Bearer AaA.bBb.CcC
+
+
+<hr>
+
 
 ### 에러 메시지 형식
 
@@ -33,6 +40,8 @@ Authorization : Bearer AaA.bBb.CcC
 ```
 
 해당 에러 코드에 대한 상세한 내용은 message로 제공되며, 응답의 HTTP 상태 코드 또한 포함됩니다.
+
+<br>
 
 #### 공통 에러 코드
 
@@ -77,6 +86,10 @@ Authorization : Bearer AaA.bBb.CcC
         </tr>
     </tbody>
 </table>
+
+
+<hr>
+
 
 ### MEMBER
 
@@ -142,7 +155,10 @@ Authorization : Bearer AaA.bBb.CcC
 
 </table>
 
-#### 로그인
+
+
+
+#### - 로그인
 
 ##### 응답
 
@@ -167,6 +183,8 @@ Authorization : Bearer AaA.bBb.CcC
         </tr>
     </tbody>
 </table>
+
+<br>
 
 #### 에러 코드
 
@@ -200,8 +218,11 @@ Authorization : Bearer AaA.bBb.CcC
     </tbody>
 </table>
 
-### LOCATION
 
+<hr>
+
+
+### LOCATION
 <table>
     <thead>
         <tr>
@@ -247,8 +268,30 @@ Authorization : Bearer AaA.bBb.CcC
         </tr>
         <tr>
             <td>POST</td>
-            <td></td>
-            <td></td>
+            <td>/locations</td>
+<td>
+
+Content-Type : multipart/form-data
+
+이름 : locationRequest <br>
+설명 : 장소 정보
+
+```json
+{
+  "latitude": 1.1,
+  "longitude": 2.2,
+  "title": "테스트장소",
+  "address": "주소",
+  "description": "설명"
+}
+```
+
+<br>
+이름 : files <br>
+설명 : 첨부 이미지 파일 <br>
+필수 : X
+
+</td>
 <td>
 
 ```json
@@ -265,7 +308,7 @@ Authorization : Bearer AaA.bBb.CcC
         </tr>
         <tr>
             <td>GET</td>
-            <td></td>
+            <td>/locations/{locationId}</td>
             <td></td>
 <td>
 
@@ -281,17 +324,23 @@ Authorization : Bearer AaA.bBb.CcC
 ```
 
 </td>
-            <td>장소ID로 조 </td>
+            <td>장소ID로 조회</td>
         </tr>
     </tbody>
 </table>
+
+
+<br>
+<hr>
+<br>
+
 
 ### POSTER
 
 <table>
   <td>Method</td>
   <td>URL</td>
-  <td>Request</td>
+  <td>Request Body</td>
   <td>Response</td>
   <td>Description</td>
   <tr>
@@ -299,9 +348,22 @@ Authorization : Bearer AaA.bBb.CcC
     <td>/locations/{locationId}/posters</td>
   <td>
 
-```json
+Content-Type : multipart/form-data
 
+이름 : posterRequest <br>
+설명 : 게시글 내용
+
+```json
+{
+  "title":"HAHA",
+  "content":"HOHO"
+}
 ```
+
+<br>
+이름 : files <br>
+설명 : 첨부 이미지 파일 <br>
+필수 : X
 
   </td>
 <td>
@@ -369,6 +431,10 @@ Authorization : Bearer AaA.bBb.CcC
 
 </table>
 
+
+<hr>
+
+
 ### COMMENT
 
 <table>
@@ -405,6 +471,12 @@ Authorization : Bearer AaA.bBb.CcC
         </tr>
     </tbody>
 </table>
+
+
+<br>
+<hr>
+<br>
+
 
 ### IMAGEFILE
 

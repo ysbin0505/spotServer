@@ -1,5 +1,26 @@
 # API 명세서
 
+### API 요청 헤더
+
+유저 정보가 필요 없는, 서버에서 인증 과정을 필요로하지 않는 요청은 Authorization 헤더가 필요 없지만<br>
+POST, PUT, DELETE와 같은 인증이 필요한 요청은 Authorization 헤더를 필요로 합니다.
+
+<table>
+    <thead>
+        <th>요청 헤더명</th>
+        <th>설명</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Authorization</td>
+            <td>인증을 필요로하는 요청을 하기 위해 접근 토큰(access_token)을 전달하는 헤더. Authorization : {토큰 타입} {토큰 값}</td>
+        </tr>
+    </tbody>
+</table>
+
+##### 요청 헤더 예
+Authorization : Bearer AaA.bBb.CcC
+
 ### 에러 메시지 형식
 
 에러 메시지의 형식은 JSON이며 다음과 같이 코드와 메시지를 갖는다.
@@ -11,9 +32,7 @@
 }
 ```
 
-해당 에러 코드에 대한 상세한 내용은 message로 제공되며, 응답의 HTTP 상태 코드 또한 포함됩니다. 
-
-
+해당 에러 코드에 대한 상세한 내용은 message로 제공되며, 응답의 HTTP 상태 코드 또한 포함됩니다.
 
 #### 공통 에러 코드
 
@@ -58,7 +77,6 @@
         </tr>
     </tbody>
 </table>
-
 
 ### MEMBER
 
@@ -125,6 +143,7 @@
 </table>
 
 #### 로그인
+
 ##### 응답
 
 <table>
@@ -148,7 +167,6 @@
         </tr>
     </tbody>
 </table>
-
 
 #### 에러 코드
 
@@ -204,22 +222,22 @@
 ```json
 
 [
-    {
-        "id": 1,
-        "latitude": 11.24308,
-        "longitude": 11.6934,
-        "title": "AAA",
-        "address": "BBB",
-        "description": "낭만 가득 운동장"
-    },
-    {
-        "id": 3,
-        "latitude": 11.24666,
-        "longitude": 11.6909,
-        "title": "CCC",
-        "address": "DDD",
-        "description": "공부하자 아냐 그건 너무 교과서야"
-    }
+  {
+    "id": 1,
+    "latitude": 11.24308,
+    "longitude": 11.6934,
+    "title": "AAA",
+    "address": "BBB",
+    "description": "낭만 가득 운동장"
+  },
+  {
+    "id": 3,
+    "latitude": 11.24666,
+    "longitude": 11.6909,
+    "title": "CCC",
+    "address": "DDD",
+    "description": "공부하자 아냐 그건 너무 교과서야"
+  }
 ]
 
 ```
@@ -235,12 +253,13 @@
 
 ```json
 {
-    "id": 13,
-    "title": "title4",
-    "content": "content4",
-    "regDate": "2024-01-24T15:13:17.118866"
+  "id": 13,
+  "title": "title4",
+  "content": "content4",
+  "regDate": "2024-01-24T15:13:17.118866"
 }
 ```
+
 </td>
             <td>장소 등록</td>
         </tr>
@@ -252,17 +271,17 @@
 
 ```json
 {
-    "id": 1,
-    "latitude": 1.1,
-    "longitude": 2.2,
-    "title": "장소명",
-    "address": "주소",
-    "description": "부가 설명"
+  "id": 1,
+  "latitude": 1.1,
+  "longitude": 2.2,
+  "title": "장소명",
+  "address": "주소",
+  "description": "부가 설명"
 }
 ```
 
 </td>
-            <td>장소ID로 조회</td>
+            <td>장소ID로 조 </td>
         </tr>
     </tbody>
 </table>

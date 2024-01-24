@@ -37,6 +37,21 @@
             <td>토큰 정보가 없습니다.</td>
         </tr>
         <tr>
+            <td>401 Unauthorized</td>
+            <td>"EXPIRED_TOKEN"</td>
+            <td>만료된 토큰입니다.</td>
+        </tr>
+        <tr>
+            <td>401 Unauthorized</td>
+            <td>"JWT_DECODE_FAIL"</td>
+            <td>토큰 정보가 올바르지 않습니다.</td>
+        </tr>
+        <tr>
+            <td>401 Unauthorized</td>
+            <td>"JWT_SIGNATURE_FAIL"</td>
+            <td>토큰 정보가 올바르지 않습니다.</td>
+        </tr>
+        <tr>
             <td>403 Forbidden</td>
             <td>"FORBIDDEN_CLIENT"</td>
             <td>접근 권한이 없습니다.</td>

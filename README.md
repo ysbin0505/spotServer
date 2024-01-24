@@ -359,17 +359,16 @@
 <td>
 
 ```json
-{
-  "status": "success",
-  "data": [
-    {
-      "id": 1,
-      "uploadFileName": "3.png",
-      "storeFileName": "993d33cc-c8e3-4dd2-9be7-4186e7110878.png"
-    }
-  ],
-  "message": "요청 처리 완료."
-}
+[
+  {
+    "id": 11,
+    "uploadFileName": "3.png"
+  },
+  {
+    "id": 12,
+    "uploadFileName": "2.png"
+  }
+]
 ```
 
 </td>
@@ -389,17 +388,16 @@
 <td>
 
 ```json
-{
-  "status": "success",
-  "data": [
-    {
-      "id": 8,
-      "uploadFileName": "3.png",
-      "storeFileName": "993d33cc-c8e3-4dd2-9be78.png"
-    }
-  ],
-  "message": "요청 처리 완료."
-}
+[
+  {
+    "id": 1,
+    "uploadFileName": "1.png"
+  },
+  {
+    "id": 2,
+    "uploadFileName": "zzhaha.png"
+  }
+]
 ```
 
 </td>

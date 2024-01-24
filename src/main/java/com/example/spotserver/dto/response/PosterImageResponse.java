@@ -13,7 +13,7 @@ public class PosterImageResponse {
     public static PosterImageResponse toDto(PosterImage posterImage) {
         PosterImageResponse posterImageResponse = new PosterImageResponse();
         posterImageResponse.setId(posterImage.getId());
-        posterImageResponse.setUploadFileName(posterImageResponse.getUploadFileName());
+        posterImageResponse.setUploadFileName(posterImage.getUploadFileName());
         return posterImageResponse;
     }
 }

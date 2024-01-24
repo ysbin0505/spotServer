@@ -196,25 +196,73 @@
     </thead>
     <tbody>
         <tr>
+            <td>GET</td>
+            <td>/locations?latitude={latitude값}&longitude={longitude값}</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<td>
+
+```json
+
+[
+    {
+        "id": 1,
+        "latitude": 11.24308,
+        "longitude": 11.6934,
+        "title": "AAA",
+        "address": "BBB",
+        "description": "낭만 가득 운동장"
+    },
+    {
+        "id": 3,
+        "latitude": 11.24666,
+        "longitude": 11.6909,
+        "title": "CCC",
+        "address": "DDD",
+        "description": "공부하자 아냐 그건 너무 교과서야"
+    }
+]
+
+```
+
+</td>
+            <td>위도, 경도로 주위 장소 조회</td>
         </tr>
         <tr>
+            <td>POST</td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<td>
+
+```json
+{
+    "id": 13,
+    "title": "title4",
+    "content": "content4",
+    "regDate": "2024-01-24T15:13:17.118866"
+}
+```
+</td>
+            <td>장소 등록</td>
         </tr>
         <tr>
+            <td>GET</td>
             <td></td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<td>
+
+```json
+{
+    "id": 1,
+    "latitude": 1.1,
+    "longitude": 2.2,
+    "title": "장소명",
+    "address": "주소",
+    "description": "부가 설명"
+}
+```
+
+</td>
+            <td>장소ID로 조회</td>
         </tr>
     </tbody>
 </table>

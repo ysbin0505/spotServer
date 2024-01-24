@@ -1,15 +1,21 @@
 package com.example.spotserver.controller;
 
 import com.example.spotserver.domain.*;
+import com.example.spotserver.dto.request.PosterRequest;
+import com.example.spotserver.dto.response.PosterResponse;
 import com.example.spotserver.service.ImageFileService;
 import com.example.spotserver.service.LocationService;
 import com.example.spotserver.service.PosterService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,54 +35,61 @@ public class PosterController {
     }
 
     @PostMapping("/locations/{locationId}/posters")
-    public ApiResponse addPoster(@RequestPart Poster poster,
-                                 @RequestPart(required = false) List<MultipartFile> files,
-                                 @PathVariable Long locationId,
-                                 @AuthenticationPrincipal(expression = "#this == 'anonymousUser' ? null : member") Member member
-                                 ) throws IOException {
-        ApiResponse apiResponse = new ApiResponse();
-
+    public ResponseEntity<PosterResponse> addPoster(@Valid @RequestPart PosterRequest posterRequest,
+                                                    @RequestPart(required = false) List<MultipartFile> files,
+                                                    @PathVariable Long locationId,
+                                                    @AuthenticationPrincipal(expression = "member") Member member) throws IOException {
         Location location = locationService.getLocation(locationId);
 
-        if(location == null) {
-            return apiResponse;
+        if (location == null) {
+            return null;
         }
 
 
-        if(files != null) {
-            List<PosterImage> imgFiles = imageStore.storePosterImages(files);
-            imageFileService.savePosterImageList(imgFiles);
-            for (PosterImage imgFile : imgFiles) {
-                imgFile.setPoster(poster);
-            }
-        }
-
+        Poster poster = PosterRequest.toEntity(posterRequest);
         poster.setLocation(location);
         poster.setWriter(member);
         posterService.addPoster(poster);
-        apiResponse.setStatus(ApiResponse.SUCCESS_STATUS);
-        apiResponse.setData(poster);
-        return apiResponse;
+
+        if (files != null) {
+            List<PosterImage> imgFiles = imageStore.storePosterImages(files);
+            for (PosterImage imgFile : imgFiles) {
+                imgFile.setPoster(poster);
+            }
+            imageFileService.savePosterImageList(imgFiles);
+        }
+
+        PosterResponse posterResponse = PosterResponse.toDto(poster);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(posterResponse);
     }
 
     @GetMapping("/locations/{locationId}/posters")
-    public ApiResponse getLocationPosters(@PathVariable Long locationId) {
+    public ResponseEntity<List<PosterResponse>> getLocationPosters(@PathVariable Long locationId) {
 
         Location location = locationService.getLocation(locationId);
         List<Poster> posters = posterService.getLocationPosters(location);
-        ApiResponse response = new ApiResponse();
-        response.setStatus(ApiResponse.SUCCESS_STATUS);
-        response.setData(posters);
-        return response;
+
+        List<PosterResponse> posterResponseList = new ArrayList<>();
+        for (Poster poster : posters) {
+            posterResponseList.add(PosterResponse.toDto(poster));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(posterResponseList);
     }
 
     @GetMapping("/posters/{posterId}")
-    public ApiResponse getPoster(@PathVariable Long posterId) {
+    public ResponseEntity<PosterResponse> getPoster(@PathVariable Long posterId) {
         Poster poster = posterService.getPoster(posterId);
-        ApiResponse response = new ApiResponse();
-        response.setStatus(ApiResponse.SUCCESS_STATUS);
-        response.setData(poster);
-        return response;
+        PosterResponse posterResponse = PosterResponse.toDto(poster);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(posterResponse);
     }
 
 }

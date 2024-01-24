@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"poster"})
 public class PosterImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

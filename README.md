@@ -241,21 +241,10 @@
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "id": 3,
-    "writer": {
-      "id": 12,
-      "name": "TESTNAME",
-      "role": "USER",
-      "regDate": "2024-01-20T16:11:55",
-      "type": "NORMAL"
-    },
-    "title": "title3",
-    "content": "content3",
-    "regDate": "2024-01-21T14:50:43.340146"
-  },
-  "message": "게시글 작성 성공."
+  "id": 9,
+  "title": "title3",
+  "content": "content3",
+  "regDate": "2024-01-24T14:20:48.901509"
 }
 ```
 
@@ -267,47 +256,24 @@
     <td>GET</td>
     <td>/locations/{loationId}/posters</td>
 <td>
-
-```json
-
-```
-
 </td>
 <td>
 
 ```json
-{
-  "status": "success",
-  "data": [
-    {
-      "id": 1,
-      "writer": {
-        "id": 12,
-        "name": "TESTNAME",
-        "role": "USER",
-        "regDate": "2024-01-20T16:11:55",
-        "type": "NORMAL"
-      },
-      "title": "title",
-      "content": "content",
-      "regDate": "2024-01-21T14:25:09"
-    },
-    {
-      "id": 2,
-      "writer": {
-        "id": 12,
-        "name": "TESTNAME",
-        "role": "USER",
-        "regDate": "2024-01-20T16:11:55",
-        "type": "NORMAL"
-      },
-      "title": "title2",
-      "content": "content2",
-      "regDate": "2024-01-21T14:29:41"
-    }
-  ],
-  "message": "전체 게시글 조회 성공."
-}
+[
+  {
+    "id": 10,
+    "title": "title3",
+    "content": "content3",
+    "regDate": "2024-01-24T14:24:17"
+  },
+  {
+    "id": 11,
+    "title": "title4",
+    "content": "content4",
+    "regDate": "2024-01-24T14:25:40"
+  }
+]
 ```
 
 </td>
@@ -323,21 +289,10 @@
 
 ```json
 {
-  "status": "success",
-  "data": {
-    "id": 2,
-    "writer": {
-      "id": 12,
-      "name": "TESTNAME",
-      "role": "USER",
-      "regDate": "2024-01-20T16:11:55",
-      "type": "NORMAL"
-    },
-    "title": "title2",
-    "content": "content2",
-    "regDate": "2024-01-21T14:29:41"
-  },
-  "message": "특정 게시글 조회 성공."
+  "id": 10,
+  "title": "title3",
+  "content": "content3",
+  "regDate": "2024-01-24T14:24:17"
 }
 ```
 

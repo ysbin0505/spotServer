@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @Data
-@JsonIgnoreProperties(value = {"location"}, allowSetters = true, allowGetters = false)
 public class Poster {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

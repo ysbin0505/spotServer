@@ -9,6 +9,7 @@ import com.example.spotserver.service.PosterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class PosterController {
         this.imageStore = imageStore;
     }
 
-    @PostMapping("/locations/{locationId}/posters")
+    @PostMapping(value = "/locations/{locationId}/posters", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PosterResponse> addPoster(@Valid @RequestPart PosterRequest posterRequest,
                                                     @RequestPart(required = false) List<MultipartFile> files,
                                                     @PathVariable Long locationId,

@@ -5,6 +5,7 @@ import com.example.spotserver.dto.request.LocationRequest;
 import com.example.spotserver.dto.response.LocationResponse;
 import com.example.spotserver.service.ImageFileService;
 import com.example.spotserver.service.LocationService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class LocationController {
     }
 
     @PostMapping
-    public ResponseEntity<LocationResponse> addLocation(@RequestPart LocationRequest locationRequest,
+    public ResponseEntity<LocationResponse> addLocation(@Valid @RequestPart LocationRequest locationRequest,
                                                         @RequestPart(required = false) List<MultipartFile> files) throws IOException {
 
         Location location = LocationRequest.toEntity(locationRequest);

@@ -44,4 +44,9 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
+
+    @ExceptionHandler({Exception.class})
+    public String unExpectException(Exception e) {
+        return e.getMessage();
+    }
 }

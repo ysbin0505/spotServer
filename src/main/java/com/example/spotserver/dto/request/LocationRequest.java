@@ -2,15 +2,16 @@ package com.example.spotserver.dto.request;
 
 import com.example.spotserver.domain.Location;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class LocationRequest {
 
-    @NotEmpty(message = "위도를 입력해주세요.")
+    @NotNull(message = "위도를 입력해주세요.")
     private Double latitude;
 
-    @NotEmpty(message = "경도를 입력해주세요.")
+    @NotNull(message = "경도를 입력해주세요.")
     private Double longitude;
 
     @NotEmpty(message = "제목을 입력해주세요.")

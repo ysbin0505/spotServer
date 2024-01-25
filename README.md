@@ -85,6 +85,11 @@ Authorization : Bearer AaA.bBb.CcC
             <td>접근 권한이 없습니다.</td>
         </tr>
         <tr>
+            <td>404 Not Found</td>
+            <td>"NO_SUCH_ELEMENT"</td>
+            <td>요청한 데이터가 존재하지 않습니다.</td>
+        </tr>
+        <tr>
             <td>415 Unsupported Media Type</td>
             <td>"NOT_SUPPORTED_CONTENT_TYPE"</td>
             <td>요청의 Content-Type이 올바르지 않습니다.</td>

@@ -42,11 +42,6 @@ public class PosterController {
                                                     @AuthenticationPrincipal(expression = "member") Member member) throws IOException {
         Location location = locationService.getLocation(locationId);
 
-        if (location == null) {
-            return null;
-        }
-
-
         Poster poster = PosterRequest.toEntity(posterRequest);
         poster.setLocation(location);
         poster.setWriter(member);

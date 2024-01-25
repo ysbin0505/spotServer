@@ -7,6 +7,7 @@ import com.example.spotserver.repository.LocationImageRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -39,8 +40,9 @@ public class ImageFileService {
     }
 
     public LocationImage getLocationImage(Long locationImageId) {
-        Optional<LocationImage> locationImage = locationImageRepository.findById(locationImageId);
-        return locationImage.get();
+        LocationImage locationImage = locationImageRepository.findById(locationImageId)
+                .orElseThrow(() -> new NoSuchElementException());
+        return locationImage;
     }
 
     public PosterImage getPosterImage(Long posterImageId) {

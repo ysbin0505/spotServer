@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -30,7 +31,8 @@ public class PosterService {
     }
 
     public Poster getPoster(Long posterId) {
-        Optional<Poster> poster = posterRepository.findById(posterId);
-        return poster.get();
+        Poster poster = posterRepository.findById(posterId)
+                .orElseThrow(() -> new NoSuchElementException());
+        return poster;
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,9 +29,10 @@ public class LocationService {
     }
 
     public Location getLocation(Long locationId) {
-        Optional<Location> location = locationRepository.findById(locationId);
+        Location location = locationRepository.findById(locationId)
+                .orElseThrow(() -> new NoSuchElementException());
 
-        return location.get();
+        return location;
     }
 
 }

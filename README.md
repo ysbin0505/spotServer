@@ -1,4 +1,5 @@
 # API 명세서
+
 <hr>
 
 ### API 요청 헤더
@@ -22,11 +23,11 @@ POST, PUT, DELETE와 같은 인증이 필요한 요청은 Authorization 헤더�
 </table>
 
 #### 요청 헤더 예
+
 Authorization : Bearer AaA.bBb.CcC
 
 
 <hr>
-
 
 ### 에러 메시지 형식
 
@@ -100,7 +101,6 @@ Authorization : Bearer AaA.bBb.CcC
 
 <hr>
 
-
 ### MEMBER
 
 <table>
@@ -163,10 +163,24 @@ Authorization : Bearer AaA.bBb.CcC
     <td>로그인</td>
   </tr>
 
+<tr>
+    <td>GET</td>
+    <td>/members/{memberId}</td>
+    <td></td>
+<td>
+
+```json
+{
+    "memberId": 1,
+    "name": "TESTNAME",
+    "role": "USER"
+}
+```
+</td>
+    <td>특정 회원 정보 조회</td>
+</tr>
+
 </table>
-
-
-
 
 #### - 로그인
 
@@ -231,8 +245,8 @@ Authorization : Bearer AaA.bBb.CcC
 
 <hr>
 
-
 ### LOCATION
+
 <table>
     <thead>
         <tr>
@@ -344,7 +358,6 @@ Content-Type : multipart/form-data
 <hr>
 <br>
 
-
 ### POSTER
 
 <table>
@@ -365,8 +378,8 @@ Content-Type : multipart/form-data
 
 ```json
 {
-  "title":"HAHA",
-  "content":"HOHO"
+  "title": "HAHA",
+  "content": "HOHO"
 }
 ```
 
@@ -448,7 +461,6 @@ Content-Type : multipart/form-data
 
 <hr>
 
-
 ### COMMENT
 
 <table>
@@ -469,7 +481,7 @@ Content-Type : multipart/form-data
 
 ```json
 {
-    "content" : "댓글내용"
+  "content": "댓글내용"
 }
 ```
 
@@ -484,6 +496,7 @@ Content-Type : multipart/form-data
   "regDate": "2024-01-25T15:51:48.44347"
 }
 ```
+
 </td>
             <td>포스터 댓글 작성</td>
         </tr>
@@ -521,10 +534,10 @@ Content-Type : multipart/form-data
 
 ```json
 {
-    "commentId": 5,
-    "writerId": 1,
-    "content": "테스트입니다.",
-    "regDate": "2024-01-25T15:51:48"
+  "commentId": 5,
+  "writerId": 1,
+  "content": "테스트입니다.",
+  "regDate": "2024-01-25T15:51:48"
 }
 ```
 
@@ -538,7 +551,6 @@ Content-Type : multipart/form-data
 <br>
 <hr>
 <br>
-
 
 ### IMAGEFILE
 

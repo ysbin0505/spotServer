@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class MemberService {
@@ -33,6 +35,12 @@ public class MemberService {
                 .withClaim("id", memberId)
                 .sign(Algorithm.HMAC256(JwtProperties.SECRET_KEY));
         return jwtToken;
+    }
+
+    public Member getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoSuchElementException());
+        return member;
     }
 
     public boolean existLoginId(String loginId) {

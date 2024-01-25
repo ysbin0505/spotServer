@@ -14,7 +14,7 @@ public class MemberResponse {
     private String name;
     private Role role;
 
-    public MemberResponse toDto(Member member) {
+    public static MemberResponse toDto(Member member) {
         MemberResponse memberResponse = new MemberResponse();
         memberResponse.memberId = member.getId();
         memberResponse.name = member.getName();

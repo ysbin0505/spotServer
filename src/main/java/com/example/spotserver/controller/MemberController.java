@@ -100,6 +100,17 @@ public class MemberController {
         }
     }
 
+    @GetMapping("/{memberId}")
+    public ResponseEntity<MemberResponse> getMember(@PathVariable Long memberId) {
+        Member member = memberService.getMember(memberId);
+
+        MemberResponse memberResponse = MemberResponse.toDto(member);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(memberResponse);
+    }
+
     @ExceptionHandler(value = DuplicateException.class)
     public ResponseEntity<ErrorResponse> duplicateException(DuplicateException e) {
         ErrorCode errorCode = e.getErrorCode();

@@ -459,25 +459,73 @@ Content-Type : multipart/form-data
     </thead>
     <tbody>
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>POST</td>
+            <td>/comments/{posterId}</td>
+<td>
+
+```json
+{
+    "content" : "댓글내용"
+}
+```
+
+</td>
+<td>
+
+```json
+{
+  "commentId": 5,
+  "writerId": 1,
+  "content": "댓글내용",
+  "regDate": "2024-01-25T15:51:48.44347"
+}
+```
+</td>
+            <td>포스터 댓글 작성</td>
         </tr>
         <tr>
+            <td>GET</td>
+            <td>/posters/{posterId}/comments</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<td>
+
+```json
+[
+  {
+    "commentId": 4,
+    "writerId": 1,
+    "content": "댓글내용4",
+    "regDate": "2024-01-25T15:34:41"
+  },
+  {
+    "commentId": 5,
+    "writerId": 1,
+    "content": "테스트입니다.",
+    "regDate": "2024-01-25T15:51:48"
+  }
+]
+```
+
+</td>
+            <td>특정 포스터의 댓글 조회</td>
         </tr>
         <tr>
+            <td>GET</td>
+            <td>/comments/{commentId}</td>
             <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+<td>
+
+```json
+{
+    "commentId": 5,
+    "writerId": 1,
+    "content": "테스트입니다.",
+    "regDate": "2024-01-25T15:51:48"
+}
+```
+
+</td>
+            <td>특정 댓글 조회</td>
         </tr>
     </tbody>
 </table>

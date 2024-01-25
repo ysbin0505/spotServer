@@ -127,7 +127,7 @@ Authorization : Bearer AaA.bBb.CcC
 
 ```json
 {
-  "id": 4,
+  "memberId": 4,
   "name": "TESTNAME",
   "role": "USER"
 }
@@ -254,7 +254,7 @@ Authorization : Bearer AaA.bBb.CcC
 
 [
   {
-    "id": 1,
+    "locationId": 1,
     "latitude": 11.24308,
     "longitude": 11.6934,
     "title": "AAA",
@@ -262,7 +262,7 @@ Authorization : Bearer AaA.bBb.CcC
     "description": "낭만 가득 운동장"
   },
   {
-    "id": 3,
+    "locationId": 3,
     "latitude": 11.24666,
     "longitude": 11.6909,
     "title": "CCC",
@@ -306,7 +306,7 @@ Content-Type : multipart/form-data
 
 ```json
 {
-  "id": 13,
+  "locationId": 13,
   "title": "title4",
   "content": "content4",
   "regDate": "2024-01-24T15:13:17.118866"
@@ -324,7 +324,7 @@ Content-Type : multipart/form-data
 
 ```json
 {
-  "id": 1,
+  "locationId": 1,
   "latitude": 1.1,
   "longitude": 2.2,
   "title": "장소명",
@@ -380,7 +380,8 @@ Content-Type : multipart/form-data
 
 ```json
 {
-  "id": 9,
+  "posterId": 9,
+  "writerId": 1,
   "title": "title3",
   "content": "content3",
   "regDate": "2024-01-24T14:20:48.901509"
@@ -393,7 +394,7 @@ Content-Type : multipart/form-data
 
   <tr>
     <td>GET</td>
-    <td>/locations/{loationId}/posters</td>
+    <td>/locations/{locationId}/posters</td>
 <td>
 </td>
 <td>
@@ -401,13 +402,15 @@ Content-Type : multipart/form-data
 ```json
 [
   {
-    "id": 10,
+    "posterId": 10,
+    "writerId": 1,
     "title": "title3",
     "content": "content3",
     "regDate": "2024-01-24T14:24:17"
   },
   {
-    "id": 11,
+    "posterId": 11,
+    "writerId": 1,
     "title": "title4",
     "content": "content4",
     "regDate": "2024-01-24T14:25:40"
@@ -428,7 +431,8 @@ Content-Type : multipart/form-data
 
 ```json
 {
-  "id": 10,
+  "posterId": 10,
+  "writerId": 1,
   "title": "title3",
   "content": "content3",
   "regDate": "2024-01-24T14:24:17"

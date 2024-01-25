@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class LocationResponse {
 
-    private Long id;
+    private Long locationId;
     private Double latitude;
     private Double longitude;
     private String title;
@@ -18,7 +18,7 @@ public class LocationResponse {
 
         LocationResponse locationResponse = new LocationResponse();
 
-        locationResponse.setId(location.getId());
+        locationResponse.setLocationId(location.getId());
         locationResponse.setLatitude(location.getLatitude());
         locationResponse.setLongitude(location.getLongitude());
         locationResponse.setTitle(location.getTitle());

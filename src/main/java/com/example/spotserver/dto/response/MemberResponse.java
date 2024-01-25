@@ -10,13 +10,13 @@ import lombok.ToString;
 @Getter
 public class MemberResponse {
 
-    private Long id;
+    private Long memberId;
     private String name;
     private Role role;
 
     public MemberResponse toDto(Member member) {
         MemberResponse memberResponse = new MemberResponse();
-        memberResponse.id = member.getId();
+        memberResponse.memberId = member.getId();
         memberResponse.name = member.getName();
         memberResponse.role = member.getRole();
         return memberResponse;

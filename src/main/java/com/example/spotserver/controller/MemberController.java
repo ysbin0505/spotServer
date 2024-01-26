@@ -38,17 +38,6 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity<MemberResponse> signupMember(@Valid @RequestBody SignUpMember signUpMember) throws DuplicateException {
 
-        String loginId = signUpMember.getLoginId();
-        String name = signUpMember.getName();
-
-        if (memberService.existLoginId(loginId)) {
-            throw new DuplicateException(ErrorCode.DUPLICATE_LOGINID);
-        }
-
-        if (memberService.existName(name)) {
-            throw new DuplicateException(ErrorCode.DUPLICATE_NAME);
-        }
-
         Member member = memberService.addMember(signUpMember);
 
         MemberResponse memberResponse = new MemberResponse();

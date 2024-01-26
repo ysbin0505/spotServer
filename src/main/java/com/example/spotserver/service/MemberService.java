@@ -7,6 +7,8 @@ import com.example.spotserver.domain.Member;
 import com.example.spotserver.domain.MemberType;
 import com.example.spotserver.domain.Role;
 import com.example.spotserver.dto.request.SignUpMember;
+import com.example.spotserver.exception.DuplicateException;
+import com.example.spotserver.exception.ErrorCode;
 import com.example.spotserver.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +30,20 @@ public class MemberService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Member addMember(SignUpMember signUpMember) {
+    public Member addMember(SignUpMember signUpMember) throws DuplicateException {
+
+
+        String loginId = signUpMember.getLoginId();
+        String name = signUpMember.getName();
+
+        if (existLoginId(loginId)) {
+            throw new DuplicateException(ErrorCode.DUPLICATE_LOGINID);
+        }
+
+        if (existName(name)) {
+            throw new DuplicateException(ErrorCode.DUPLICATE_NAME);
+        }
+
 
         Member member = signUpMember.toEntity(signUpMember);
         member.setRole(Role.USER);

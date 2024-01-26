@@ -49,11 +49,7 @@ public class MemberController {
             throw new DuplicateException(ErrorCode.DUPLICATE_NAME);
         }
 
-        Member member = signUpMember.toEntity(signUpMember);
-        member.setRole(Role.USER);
-        member.setLoginPwd(bCryptPasswordEncoder.encode(member.getLoginPwd()));
-        member.setType(MemberType.NORMAL);
-        memberService.addMember(member);
+        Member member = memberService.addMember(signUpMember);
 
         MemberResponse memberResponse = new MemberResponse();
         memberResponse = memberResponse.toDto(member);
@@ -85,19 +81,6 @@ public class MemberController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(tokenInfo);
-    }
-
-//    @GetMapping("/signup/kakao")
-    public String addKakaoMember(@RequestHeader("Authorization") String access_token) {
-        Long snsId = KakaoApi.getTokenInfo(access_token);
-
-        if (memberService.existKakaoMember(snsId)) {
-            return "이미 존재하는 회원입니다.";
-        } else {
-            Member member = KakaoApi.getMemberInfo(access_token);
-            memberService.addMember(member);
-            return "회원가입 완료.";
-        }
     }
 
     @GetMapping("/{memberId}")

@@ -5,8 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.spotserver.config.jwt.JwtProperties;
 import com.example.spotserver.domain.Member;
 import com.example.spotserver.domain.MemberType;
+import com.example.spotserver.domain.Role;
+import com.example.spotserver.dto.request.SignUpMember;
 import com.example.spotserver.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,15 +20,23 @@ import java.util.Optional;
 public class MemberService {
 
     private MemberRepository memberRepository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public Member addMember(Member member) {
-        Member addMember = memberRepository.save(member);
-        return addMember;
+    public Member addMember(SignUpMember signUpMember) {
+
+        Member member = signUpMember.toEntity(signUpMember);
+        member.setRole(Role.USER);
+        member.setLoginPwd(bCryptPasswordEncoder.encode(member.getLoginPwd()));
+        member.setType(MemberType.NORMAL);
+
+        Member resultMember = memberRepository.save(member);
+        return resultMember;
     }
 
     public String createToken(Long memberId) {

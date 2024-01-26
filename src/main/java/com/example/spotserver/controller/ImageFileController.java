@@ -12,6 +12,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,5 +92,27 @@ public class ImageFileController {
                 .body(resource);
     }
 
+    @GetMapping("/locations/image/{locationId}")
+    public ResponseEntity<Resource> getLocationImageFileByLocationId(@PathVariable Long locationId) throws IOException {
+        List<LocationImage> imageList = imageFileService.getLocationImageList(locationId);
+
+        if (imageList != null && !imageList.isEmpty()) {
+            LocationImage selectedImage = imageList.get(0);
+            String imageFileName = selectedImage.getStoreFileName();
+
+            Resource resource = new UrlResource("file:" + imageStore.getLocationImgFullPath(imageFileName));
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+
+            return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .body(resource);
+        } else {
+            // 해당 locationId에 대한 이미지가 없을 경우 404 에러 반환
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
